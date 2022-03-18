@@ -1,7 +1,10 @@
+
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:realestateapp/layout/layout_screen.dart';
+import 'package:realestateapp/modules/cubit/cubit.dart';
+import 'package:realestateapp/modules/cubit/states.dart';
 import 'package:realestateapp/modules/login/cubit/cubit.dart';
 import 'package:realestateapp/modules/login/cubit/states.dart';
 import 'package:realestateapp/modules/register/register_screen.dart';
@@ -29,14 +32,16 @@ class LoginScreen extends StatelessWidget {
             );
           }if(state is LoginSuccessState)
           {
-            CacheHelper.saveData(
-              key: 'uid',
-              value: state.uid,
-            ).then((value) =>
-            {
-              uid = state.uid,
-              navigateAndFinish(context, LayoutScreen(),)
-            });
+              CacheHelper.saveData(
+                key: 'uid',
+                value: state.uid,
+              ).then((value) =>
+              {
+                AppCubit.get(context).getUserData(),
+                uid = state.uid,
+                navigateAndFinish(context, LayoutScreen(),),
+                AppCubit.get(context).getUserData(),
+              });
           }
         },
         builder: (context, state)
@@ -146,7 +151,7 @@ class LoginScreen extends StatelessWidget {
                         children: [
                            Text(
                               'Don\'t have an account ?',
-                             style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.white),
+                             style: Theme.of(context).textTheme.bodySmall!,
                           ),
                           defaultTextButton(
                             function: ()

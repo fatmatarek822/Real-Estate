@@ -70,7 +70,8 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: lightTheme,
             darkTheme: darkTheme,
-            themeMode: AppCubit.get(context).isDark ? ThemeMode.dark : ThemeMode.light,
+           themeMode: ThemeMode.light,
+           // themeMode: AppCubit.get(context).isDark ? ThemeMode.dark : ThemeMode.light,
             home: AnimatedSplashScreen(
               splash: Icons.house_outlined,
               nextScreen: startWidget!,
