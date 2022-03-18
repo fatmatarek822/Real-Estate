@@ -57,10 +57,6 @@ class AppCubit extends Cubit<AppStates> {
 
   void ChangeBottomNav(int index)
   {
-    if(index==4)
-    {
-      getUserData();
-    }
       currentIndex = index;
       emit(AppChangeBottomNavState());
   }

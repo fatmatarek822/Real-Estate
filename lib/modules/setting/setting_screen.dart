@@ -15,13 +15,7 @@ class SettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppStates>(
-      listener: (context, state)
-      {
-        // if(state is AppGetUserSuccessState)
-        // {
-        //   AppCubit.get(context).getUserData();
-        // }
-      },
+      listener: (context, state) {},
       builder: (context, state)
       {
         var userModel = AppCubit.get(context).userModel;
