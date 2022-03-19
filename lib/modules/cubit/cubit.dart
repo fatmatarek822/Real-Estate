@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:realestateapp/models/post_model.dart';
 import 'package:realestateapp/models/user_model.dart';
 import 'package:realestateapp/modules/chat/chat_screen.dart';
 import 'package:realestateapp/modules/cubit/states.dart';
@@ -16,6 +17,7 @@ import 'package:realestateapp/modules/setting/setting_screen.dart';
 import 'package:realestateapp/shared/components/components.dart';
 import 'package:realestateapp/shared/components/constant.dart';
 import 'package:realestateapp/shared/network/local/cache_helper.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(AppInitialState());
@@ -54,6 +56,7 @@ class AppCubit extends Cubit<AppStates> {
   //   'Setting',
   // ];
   int currentIndex = 0;
+
 
   void ChangeBottomNav(int index)
   {
@@ -115,24 +118,6 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
-//   void updateUserImage({
-//   required String name,
-//   required String phone,
-// })
-//   {
-//     emit(UserUpdateLoadingState());
-//     if(profileImage !=null)
-//     {
-//       uploadProfileImage();
-//     }else
-//       {
-//        updateUser(
-//            name: name,
-//            phone: phone,
-//        );
-//       }
-//   }
-
   void updateUser({
     required String name,
     required String phone,
@@ -191,6 +176,139 @@ class AppCubit extends Cubit<AppStates> {
         });
       }
 
+  }
+
+
+  File? postImage;
+
+  Future<void> getPostImage() async
+  {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    if(pickedFile != null)
+    {
+      postImage = File(pickedFile.path);
+      print(pickedFile.path);
+      emit(PostImagePickedSuccessState());
+    }else
+    {
+      print('No image selected');
+      emit(PostImagePickedErrorState());
+    }
+  }
+
+  void UploadNewPost({
+    required String namePost,
+    required String description,
+    required String place,
+    required String no_of_room,
+    required String no_of_bathroom,
+    required String area,
+    // required String postImage,
+  })
+  {
+    emit(AppCreatePostLoadingState());
+    firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('users/${Uri.file(postImage!.path).pathSegments.last}')
+        .putFile(postImage!)
+        .then((value)
+    {
+      value.ref.getDownloadURL().then((value)
+      {
+        //   emit(SocialUploadCoverImageSuccessState());
+        print(value);
+//        coverImageUrl = value;
+        CreatePost(
+          namePost: namePost,
+          description: description,
+          area: area,
+         place: place,
+          no_of_room: no_of_room,
+          no_of_bathroom: no_of_bathroom,
+          postImage: value,
+        );
+      }).catchError((error)
+      {
+        emit(AppCreatePostErrorState(error.toString()));
+      });
+    }).catchError((error)
+    {
+      emit(AppCreatePostErrorState(error.toString()));
+    });
+  }
+
+
+  void CreatePost({
+    required String namePost,
+    required String description,
+    required String place,
+    required String no_of_room,
+    required String no_of_bathroom,
+    required String area,
+    required String postImage,
+  })
+  {
+    emit(AppCreatePostLoadingState());
+    PostModel model = PostModel(
+      name: userModel!.name,
+      uid : userModel!.uid,
+      image: userModel!.image,
+      namePost: namePost,
+      description: description,
+      place: place,
+      no_of_room: no_of_room,
+      no_of_bathroom: no_of_bathroom,
+      area: area,
+      postImage: postImage,
+    );
+
+    FirebaseFirestore.instance
+        .collection('posts')
+        .add(model.toMap())
+        .then((value)
+    {
+      emit(AppCreatePostSuccessState());
+    })
+        .catchError((error){
+      emit(AppCreatePostErrorState(error.toString()));
+    });
+  }
+
+  void removePostImage()
+  {
+    postImage = null;
+    emit(AppRemovePostImageState());
+  }
+
+  List<PostModel> posts =[];
+  List<String> postsId =[];
+
+  void getPosts()
+  {
+    emit(AppGetPostsLoadingState());
+    FirebaseFirestore.instance
+        .collection('posts')
+        .get()
+        .then((value)
+    {
+      value.docs.forEach((element)
+      {
+        print(element.id);
+        element.reference.collection('likes').get().then((value){
+          postsId.add(element.id);
+
+          //  comments.add(SocialCommentPostModel.fromJson(element.data()));
+          posts.add(PostModel.fromJson(element.data()));
+        }).catchError((error){
+
+        });
+      });
+      emit(AppGetPostsSuccessState());
+    })
+        .catchError((error){
+      emit(AppGetPostsErrorState(error.toString()));
+    });
   }
 
 }

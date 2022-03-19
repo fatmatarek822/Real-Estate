@@ -27,6 +27,30 @@ class UserUpdateLoadingState extends AppStates{}
 
 class AppChangeModeState extends AppStates{}
 
+class AppCreatePostLoadingState extends AppStates{}
+
+class AppCreatePostSuccessState extends AppStates{}
+
+class AppCreatePostErrorState extends AppStates {
+  final String error;
+  AppCreatePostErrorState(this.error);
+}
+
+class PostImagePickedSuccessState extends AppStates {}
+
+class PostImagePickedErrorState extends AppStates{}
+
+class AppRemovePostImageState extends AppStates{}
+
+class AppGetPostsLoadingState extends AppStates{}
+
+class AppGetPostsSuccessState extends AppStates{}
+
+class AppGetPostsErrorState extends AppStates
+{
+  final String error;
+  AppGetPostsErrorState(this.error);
+}
 
 
 

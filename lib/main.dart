@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => AppCubit()..getUserData()..changeAppMode(
+      create: (BuildContext context) => AppCubit()..getUserData()..getPosts()..changeAppMode(
         themeMode: isDark,
       ),
       child: BlocConsumer<AppCubit, AppStates>(
