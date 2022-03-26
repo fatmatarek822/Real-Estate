@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => AppCubit()..getUserData()..getPosts()..changeAppMode(
+      create: (BuildContext context) => AppCubit()..getUserData()..getAllUsers()..getPosts()..changeAppMode(
         themeMode: isDark,
       ),
       child: BlocConsumer<AppCubit, AppStates>(
@@ -70,8 +70,8 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: lightTheme,
             darkTheme: darkTheme,
-           themeMode: ThemeMode.light,
-           // themeMode: AppCubit.get(context).isDark ? ThemeMode.dark : ThemeMode.light,
+           //themeMode: ThemeMode.light,
+            themeMode: AppCubit.get(context).isDark ? ThemeMode.dark : ThemeMode.light,
             home: AnimatedSplashScreen(
               splash: Icons.house_outlined,
               nextScreen: startWidget!,

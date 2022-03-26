@@ -52,6 +52,33 @@ class AppGetPostsErrorState extends AppStates
   AppGetPostsErrorState(this.error);
 }
 
+class AppGetAllUserLoadingState extends AppStates{}
+
+class AppGetAllUserSuccessState extends AppStates{}
+
+class AppGetAllUserErrorState extends AppStates
+{
+  final String error;
+  AppGetAllUserErrorState(this.error);
+}
+
+class AppSendMessageSuccessState extends AppStates{}
+
+class AppSendMessageErrorState extends AppStates{
+
+  final String error;
+  AppSendMessageErrorState(this.error);
+
+}
+
+class AppGetMessagesLoadingState extends AppStates{}
+
+class AppGetMessagesSuccessState extends AppStates{}
+
+class AppGetMessagesErrorState extends AppStates{}
+
+class AppSettingState extends AppStates{}
+
 
 
 

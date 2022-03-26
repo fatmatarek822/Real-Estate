@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:realestateapp/modules/cubit/cubit.dart';
 import 'package:realestateapp/modules/cubit/states.dart';
 import 'package:realestateapp/modules/search/search_screen.dart';
+import 'package:realestateapp/modules/setting/setting_screen.dart';
 
 import '../shared/components/components.dart';
 
@@ -12,7 +13,13 @@ class LayoutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  BlocConsumer<AppCubit, AppStates>(
-       listener: (context, state) {},
+       listener: (context, state)
+       {
+         if(state is AppSettingState)
+         {
+           navigateTo(context, SettingScreen());
+         }
+       },
         builder: (context, state)
         {
           var cubit = AppCubit.get(context);
@@ -28,12 +35,12 @@ class LayoutScreen extends StatelessWidget {
                     },
                     icon: Icon(Icons.search),
                 ),
-                IconButton(onPressed: ()
-                {
-                   AppCubit.get(context).changeAppMode();
-                }, icon: Icon(
-                    Icons.brightness_4_outlined),
-                ),
+                // IconButton(onPressed: ()
+                // {
+                //    AppCubit.get(context).changeAppMode();
+                // }, icon: Icon(
+                //     Icons.brightness_4_outlined),
+                // ),
               ],
             ),
             body: cubit.Screens[cubit.currentIndex],
