@@ -38,7 +38,10 @@ class AppCreatePostErrorState extends AppStates {
 
 class PostImagePickedSuccessState extends AppStates {}
 
-class PostImagePickedErrorState extends AppStates{}
+class PostImagePickedErrorState extends AppStates
+{
+
+}
 
 class AppRemovePostImageState extends AppStates{}
 
@@ -79,7 +82,36 @@ class AppGetMessagesErrorState extends AppStates{}
 
 class AppSettingState extends AppStates{}
 
+class PostUpdateErrorState extends AppStates{}
 
+// class AppPickAddImageSuccessState extends AppStates
+// {
+// }
+//
+// class AppUploadAddImageErrorState extends AppStates
+// {
+//   final String error;
+//   AppUploadAddImageErrorState(this.error);
+// }
+
+class UploadNewImageSuccessState extends AppStates{}
+
+class UploadNewImageErrorState extends AppStates
+{
+  final String error;
+  UploadNewImageErrorState(this.error);
+
+}
+
+class UploadNewPostLoadingState extends AppStates{}
+
+class UploadNewPostSuccessState extends AppStates{}
+
+class UploadNewPostErrorState extends AppStates
+{
+  final String error;
+  UploadNewPostErrorState(this.error);
+}
 
 
 

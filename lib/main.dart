@@ -11,6 +11,8 @@ import 'package:realestateapp/shared/components/constant.dart';
 import 'package:realestateapp/shared/network/local/cache_helper.dart';
 import 'package:realestateapp/shared/styles/themes.dart';
 
+import 'modules/uploadimage.dart';
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -70,8 +72,8 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: lightTheme,
             darkTheme: darkTheme,
-           //themeMode: ThemeMode.light,
-            themeMode: AppCubit.get(context).isDark ? ThemeMode.dark : ThemeMode.light,
+            themeMode: ThemeMode.light,
+            //themeMode: AppCubit.get(context).isDark ? ThemeMode.dark : ThemeMode.light,
             home: AnimatedSplashScreen(
               splash: Icons.house_outlined,
               nextScreen: startWidget!,

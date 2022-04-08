@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -19,6 +21,7 @@ import 'package:realestateapp/shared/components/components.dart';
 import 'package:realestateapp/shared/components/constant.dart';
 import 'package:realestateapp/shared/network/local/cache_helper.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path/path.dart' as path;
 
 class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(AppInitialState());
@@ -31,7 +34,7 @@ class AppCubit extends Cubit<AppStates> {
     emit(AppGetUserLoadingState());
     FirebaseFirestore.instance.collection('users').doc(uid).get().
     then((value) {
-       print(value.data());
+      print(value.data());
       userModel = UserModel.fromJson(value.data()!);
       emit(AppGetUserSuccessState());
     })
@@ -97,7 +100,7 @@ class AppCubit extends Cubit<AppStates> {
   void uploadProfileImage({
     required String name,
     required String phone,
-})
+  })
   {
     emit(UserUpdateLoadingState());
     firebase_storage.FirebaseStorage.instance
@@ -109,17 +112,17 @@ class AppCubit extends Cubit<AppStates> {
       value.ref.getDownloadURL()
           .then((value)
       {
-     //   emit(UploadProfileImageSuccessState());
+        //   emit(UploadProfileImageSuccessState());
         print(value);
         updateUser(
-            name: name,
-            phone: phone,
-            image: value,
+          name: name,
+          phone: phone,
+          image: value,
         );
-       // profileImageUrl = value;
+        // profileImageUrl = value;
       })
           .catchError((error){
-            emit(UploadProfileImageErrorState());
+        emit(UploadProfileImageErrorState());
       });
     })
         .catchError((error){
@@ -131,7 +134,7 @@ class AppCubit extends Cubit<AppStates> {
     required String name,
     required String phone,
     String? image,
-})
+  })
   {
     UserModel model = UserModel(
       name: name,
@@ -177,15 +180,47 @@ class AppCubit extends Cubit<AppStates> {
       emit(AppChangeModeState());
     }
     else
-      {
-        isDark = !isDark;
-        CacheHelper.putBoolean(key: 'isDark', value: isDark)
-            .then((value) {
-          emit(AppChangeModeState());
-        });
-      }
+    {
+      isDark = !isDark;
+      CacheHelper.putBoolean(key: 'isDark', value: isDark)
+          .then((value) {
+        emit(AppChangeModeState());
+      });
+    }
 
   }
+
+/*
+  List<XFile> addImages = [];
+  List<String> addImagesUrl = [];
+  var pickerimage = ImagePicker();
+
+  Future<void> getAddStreamImage() async
+  {
+    emit(PostImagePickedSuccessState());
+    final List<XFile>? pickedImages = await picker.pickMultiImage();
+    if (pickedImages!.isNotEmpty) {
+      addImages = [];
+      addImagesUrl = [];
+      addImages.addAll(pickedImages);
+    } else
+    {
+      emit(PostImagePickedErrorState());
+    }
+  }
+*/
+  // final ImagePicker _picker = ImagePicker();
+  // List<XFile>? imageFileList =[];
+  //
+  // void selectImages() async
+  // {
+  //   final List<XFile>? selectedImages = await _picker.pickMultiImage();
+  //   if(selectedImages!.isNotEmpty)
+  //   {
+  //     imageFileList!.addAll(selectedImages);
+  //     emit(PostImagePickedSuccessState());
+  //   }
+  // }
 
 
   File? postImage;
@@ -205,6 +240,7 @@ class AppCubit extends Cubit<AppStates> {
       emit(PostImagePickedErrorState());
     }
   }
+
 
   void UploadNewPost({
     required String namePost,
@@ -232,7 +268,7 @@ class AppCubit extends Cubit<AppStates> {
           namePost: namePost,
           description: description,
           area: area,
-         place: place,
+          place: place,
           no_of_room: no_of_room,
           no_of_bathroom: no_of_bathroom,
           postImage: value,
@@ -290,8 +326,396 @@ class AppCubit extends Cubit<AppStates> {
     emit(AppRemovePostImageState());
   }
 
+
+
+
+
+
+
+/*
+    UploadNewPost({
+    required String namePost,
+    required String description,
+    required String place,
+    required String no_of_room,
+    required String no_of_bathroom,
+    required String area,
+    required List? postImage,
+  }) async {
+    emit(UploadNewPostLoadingState());
+    CollectionReference? imgRef;
+    firebase_storage.Reference? ref;
+    for (var images in postimage)
+    {
+      ref = firebase_storage.FirebaseStorage.instance
+          .ref()
+          .child('posts/${Uri.file(images.path).pathSegments.last}');
+      await ref.putFile(images).whenComplete(() async
+    {
+    await ref!.getDownloadURL().then((value)
+    {
+      print(value);
+    imgRef?.add({'url': value});
+       }).then((value) {
+         print('success');
+         emit(UploadNewPostSuccessState());
+         print(images.path);
+
+    }).catchError((error)
+    {
+      emit(UploadNewPostErrorState(error.toString()));
+      print(error.toString());
+    });
+
+    });
+    }
+    CreatePost(
+      namePost: namePost,
+      description: description,
+      place: place,
+      no_of_room: no_of_room,
+      no_of_bathroom: no_of_bathroom,
+      area: area,
+      postImage: postImage!,
+    );
+    print('successful');
+
+    imgRef = FirebaseFirestore.instance.collection('posts');
+   // emit(UploadNewPostSuccessState());
+  }
+
+*/
+
+
+
+/*
+  CollectionReference? imgRef;
+  firebase_storage.Reference? ref;
+
+  Future<void> UploadNewPost({
+    required String namePost,
+    required String description,
+    required String place,
+    required String no_of_room,
+    required String no_of_bathroom,
+    required String area,
+    List? postImage ,
+  })
+  async {
+    emit(AppCreatePostLoadingState());
+
+    for(var images in postimage)
+    {
+      ref = firebase_storage.FirebaseStorage.instance
+          .ref()
+          .child('posts/${images.path}');
+      await ref!.putFile(images).whenComplete(() async
+    {
+    await ref!.getDownloadURL().then((value)
+    {
+    imgRef?.add({'url': value});
+    print(imgRef!.path);
+    });
+    });
+
+      // firebase_storage.FirebaseStorage.instance
+      //     .ref()
+      //     .child('posts/${Uri.file(postimage[i].path).pathSegments.last}')
+      //     .putFile(File(postimage[i].path))
+      //     .then((value)
+      // {
+      //   print(value.toString());
+      //   value.ref.getDownloadURL();
+      //   print(value);
+      // }).catchError((error)
+      // {
+      //
+      // });
+    }
+    imgRef = FirebaseFirestore.instance.collection('posts');
+    CreatePost(
+        namePost: namePost,
+        description: description,
+        place: place,
+        no_of_room: no_of_room,
+        no_of_bathroom: no_of_bathroom,
+        area: area,
+       postImage: postimage,
+    );
+    emit(AppCreatePostSuccessState());
+    }
+
+*/
+
+
+
+  // void UploadNewPost({
+  //   required String namePost,
+  //   required String description,
+  //   required String place,
+  //   required String no_of_room,
+  //   required String no_of_bathroom,
+  //   required String area,
+  //    required List Images,
+  // })
+  // {
+  //   emit(AppCreatePostLoadingState());
+  //
+  //   int i=0;
+  //   for(i;i<Images.length;i++)
+  //   {
+  //     firebase_storage.FirebaseStorage.instance
+  //         .ref()
+  //         .child('posts/${Uri.file(Images[i].path).pathSegments.last}')
+  //         .putFile(File(Images[i].path))
+  //         .then((value)
+  //     {
+  //       Images.add({'url' : value});
+  //       print(value.toString());
+  //       value.ref.getDownloadURL();
+  //       emit(UploadNewPostSuccessState());
+  //       FirebaseFirestore.instance.collection('posts').doc(uid).path;
+  //     }).catchError((error)
+  //     {
+  //       emit(UploadNewPostErrorState(error.toString()));
+  //     });
+  //   }
+  //
+  //   CreatePost(
+  //       namePost: namePost,
+  //       description: description,
+  //       place: place,
+  //       no_of_room: no_of_room,
+  //       no_of_bathroom: no_of_bathroom,
+  //       area: area,
+  //      postImage: postimage,
+  //   );
+  //
+  //
+  //   }
+
+
+
+
+  // List<File> postimage= [];
+  // chooseImage() async {
+  //   final pickedFile = await picker.getImage(source: ImageSource.gallery);
+  //    postimage.add(File(pickedFile!.path));
+  //
+  //   print('Successful');
+  //   emit(AppPickAddImageSuccessState());
+  //   if (pickedFile.path == null)
+  //   {
+  //     retrieveLostData();
+  //     print(pickedFile.path);
+  //     emit(AppUploadAddImageErrorState(Error.safeToString(Error)));
+  //     print('Error');
+  //   }
+  // }
+  // Future<void> retrieveLostData() async {
+  //   final LostData response = await picker.getLostData();
+  //   if (response.isEmpty) {
+  //     return;
+  //   }
+  //   if (response.file != null) {
+  //       postimage.add(File(response.file!.path));
+  //       emit(AppPickAddImageSuccessState());
+  //   } else {
+  //     print(response.file);
+  //     print('Error');
+  //   }
+  // }
+
+
+
+
+/*
+  List<File> postimage= [];
+  dynamic chooseImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+      postimage.add(File(pickedFile!.path));
+      emit(UploadNewImageSuccessState());
+      print('Successful');
+
+    if (pickedFile.path == null)
+    {
+      retrieveLostData();
+      print('No image selected');
+      emit(UploadNewImageErrorState(Error.safeToString(Error)));
+    }
+  }
+  Future<void> retrieveLostData() async {
+    final LostData response = await picker.getLostData();
+    if (response.isEmpty) {
+      return;
+    }
+    if (response.file == null) {
+        postimage.add(File(response.file!.path));
+        emit(UploadNewImageSuccessState());
+    } else {
+      print(response.file);
+      emit(UploadNewImageErrorState(Error.safeToString(Error)));
+      print('Error');
+    }
+  }
+*/
+
+
+
+/*
+  CollectionReference? imgRef;
+  firebase_storage.Reference? ref;
+
+  Future uploadNewPost()async
+  {
+    for(var images in postimage)
+    {
+      ref = firebase_storage.FirebaseStorage.instance
+          .ref()
+          .child('posts/${images.path}');
+      await ref!.putFile(images).whenComplete(() async
+      {
+        await ref!.getDownloadURL().then((value)
+        {
+          imgRef!.add({'url': value});
+        });
+      });
+    }
+    CreatePost(
+        namePost: namePost,
+        description: description,
+        place: place,
+        no_of_room: no_of_room,
+        no_of_bathroom: no_of_bathroom,
+        area: area,
+        postImage: postImage,
+    );
+ //   imgRef = FirebaseFirestore.instance.collection('posts').doc(uid).set(imgRef);
+  }
+
+*/
+
+
+
+  // Future<void> retrieveLostData() async {
+  //   final LostData response = await picker.getLostData();
+  //   if (response.isEmpty) {
+  //     return;
+  //   }
+  //   if (response.file != null) {
+  //     postimage.add(File(response.file!.path));
+  //     emit(PostImagePickedSuccessState());
+  //     print('Successful......');
+  //   } else {
+  //     print(response.file);
+  //     emit(PostImagePickedErrorState(Error.safeToString(Error)));
+  //     print('Error');
+  //   }
+  // }
+
+    // int i=0;
+    // for(i;i<addStreamImage.length;i++)
+    // {
+    //   firebase_storage.FirebaseStorage.instance
+    //       .ref()
+    //       .child('users/${Uri.file(addStreamImage[i].path).pathSegments.last}')
+    //       .putFile(File(addStreamImageUrl[i]))
+    //       .then((value)
+    //   {
+    //     print(value.toString());
+    //     value.ref.getDownloadURL();
+    //   }).catchError((error)
+    //   {
+    //
+    //   });
+    // }
+/*
+    CreatePost(
+      namePost: namePost,
+      description: description,
+      place: place,
+      no_of_room: no_of_room,
+      no_of_bathroom: no_of_bathroom,
+      area: area,
+      postImage: addImages,
+    );
+*/
+//  }
+//     firebase_storage.FirebaseStorage.instance
+//         .ref()
+//         .child('users/${Uri.file(imageFileList!.toString()).pathSegments.last}')
+//         .putString(imageFileList!.toString())
+//         .then((value)
+//     {
+//       value.ref.getDownloadURL().then((value)
+//       {
+//         //   emit(SocialUploadCoverImageSuccessState());
+//         print(value);
+// //        coverImageUrl = value;
+//         CreatePost(
+//           namePost: namePost,
+//           description: description,
+//           area: area,
+//          place: place,
+//           no_of_room: no_of_room,
+//           no_of_bathroom: no_of_bathroom,
+//           postImage: value,
+//         );
+//       }).catchError((error)
+//       {
+//         emit(AppCreatePostErrorState(error.toString()));
+//       });
+//     }).catchError((error)
+//     {
+//       emit(AppCreatePostErrorState(error.toString()));
+//     });
+//   };
+
+
+
+  /*
+  void CreatePost({
+    required String namePost,
+    required String description,
+    required String place,
+    required String no_of_room,
+    required String no_of_bathroom,
+    required String area,
+    required String? postImage,
+  })
+  {
+    emit(UploadNewPostLoadingState());
+    PostModel model = PostModel(
+      name: userModel!.name,
+      uid : userModel!.uid,
+      image: userModel!.image,
+      namePost: namePost,
+      description: description,
+      place: place,
+      no_of_room: no_of_room,
+      no_of_bathroom: no_of_bathroom,
+      area: area,
+      postImage: postImage,
+    );
+    FirebaseFirestore.instance
+        .collection('posts')
+        .add(model.toMap())
+        .then((value)
+    {
+      emit(UploadNewPostSuccessState());
+    })
+        .catchError((error){
+      emit(UploadNewPostErrorState (error.toString()));
+      print(error.toString());
+    });
+  }
+
+*/
+
   List<PostModel> posts =[];
   List<String> postsId =[];
+
+  // PostModel? postModel;
 
   void getPosts()
   {
@@ -309,6 +733,7 @@ class AppCubit extends Cubit<AppStates> {
 
           //  comments.add(SocialCommentPostModel.fromJson(element.data()));
           posts.add(PostModel.fromJson(element.data()));
+          //    postModel = PostModel.fromJson(element.data());
         }).catchError((error){
 
         });
@@ -317,6 +742,7 @@ class AppCubit extends Cubit<AppStates> {
     })
         .catchError((error){
       emit(AppGetPostsErrorState(error.toString()));
+      print(error.toString());
     });
   }
 
@@ -327,17 +753,17 @@ class AppCubit extends Cubit<AppStates> {
   {
     emit(AppGetAllUserLoadingState());
     users =[];
-      FirebaseFirestore.instance
-          .collection('users')
-          .get().then((value) {
-        value.docs.forEach((element) {
-          if(element.data()['uid'] != userModel!.uid)
-            users.add(UserModel.fromJson (element.data()));
-        });
-        emit(AppGetAllUserSuccessState());
-      }).catchError((error){
-        emit(AppGetAllUserErrorState(error));
+    FirebaseFirestore.instance
+        .collection('users')
+        .get().then((value) {
+      value.docs.forEach((element) {
+        if(element.data()['uid'] != userModel!.uid)
+          users.add(UserModel.fromJson (element.data()));
       });
+      emit(AppGetAllUserSuccessState());
+    }).catchError((error){
+      emit(AppGetAllUserErrorState(error.toString()));
+    });
   }
 
 
