@@ -9,8 +9,8 @@ import 'package:realestateapp/models/user_model.dart';
 import 'package:realestateapp/modules/cubit/cubit.dart';
 import 'package:realestateapp/modules/cubit/states.dart';
 import 'package:realestateapp/modules/new_post/new_post.dart';
-import 'package:realestateapp/modules/update_post/update_post.dart';
 import 'package:realestateapp/shared/components/components.dart';
+import 'package:realestateapp/shared/components/constant.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -118,6 +118,7 @@ class HomeScreen extends StatelessWidget {
                         ], //
                       ),
                     ],
+
 
                   ),
                   Container(

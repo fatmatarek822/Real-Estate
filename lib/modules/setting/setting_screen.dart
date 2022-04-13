@@ -164,11 +164,12 @@ class SettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppStates>(
-      listener: (context, state){},
+      listener: (context, state) {},
       builder: (context, state)
       {
         var userModel = AppCubit.get(context).userModel;
         var profileImage = AppCubit.get(context).profileImage;
+     //   var post = AppCubit.get(context).posts;
 
         return Scaffold(
           appBar: AppBar(

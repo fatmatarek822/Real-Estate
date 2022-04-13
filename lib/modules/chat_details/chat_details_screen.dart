@@ -1,5 +1,6 @@
 
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:realestateapp/models/message_model.dart';
@@ -7,18 +8,52 @@ import 'package:realestateapp/models/user_model.dart';
 import 'package:realestateapp/modules/cubit/cubit.dart';
 import 'package:realestateapp/modules/cubit/states.dart';
 
-class ChatDetailsScreen extends StatelessWidget {
+class ChatDetailsScreen extends StatefulWidget {
 
-  var messageController = TextEditingController();
   UserModel? userModel;
   ChatDetailsScreen({this.userModel});
+
+  @override
+  State<ChatDetailsScreen> createState() => _ChatDetailsScreenState();
+}
+
+class _ChatDetailsScreenState extends State<ChatDetailsScreen> {
+  var messageController = TextEditingController();
+
+  // @override
+  // void initState(){
+  //
+  //   super.initState();
+  //   final fbm = FirebaseMessaging.instance;
+  //   fbm.requestNotificationPermission();
+  //   fbm.configure(
+  //       onMessage: (msg)
+  //   {
+  //     print(msg);
+  //     return;
+  //   },
+  //     onLaunch: (msg)
+  //     {
+  //       print(msg);
+  //       return;
+  //     },
+  //     onResume: (msg)
+  //   {
+  //     print(msg);
+  //     return;
+  //   }
+  //   );
+  // }
+
+
+
 
   @override
   Widget build(BuildContext context) {
     return Builder(
       builder: (BuildContext context) {
 
-        AppCubit.get(context).getMessages(receiverId: userModel!.uid! );
+        AppCubit.get(context).getMessages(receiverId: widget.userModel!.uid! );
         return BlocConsumer<AppCubit, AppStates>(
           listener: (context, state) {},
           builder: (context, state)
@@ -30,15 +65,15 @@ class ChatDetailsScreen extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       backgroundImage: NetworkImage(
-                        '${userModel!.image}',
+                        '${widget.userModel!.image}',
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 15,
                     ),
                     Text(
-                      '${userModel!.name}',
-                      style: TextStyle(
+                      '${widget.userModel!.name}',
+                      style: const TextStyle(
                         fontSize: 15,
                       ),
                     ),
@@ -58,7 +93,7 @@ class ChatDetailsScreen extends StatelessWidget {
                             return buildMyMessage(message);
                           return buildMessage(message);
                         },
-                        separatorBuilder: (context, index) =>SizedBox(
+                        separatorBuilder: (context, index) =>const SizedBox(
                           height: 15,),
                         itemCount: AppCubit.get(context).Messages.length,
                       ),
@@ -78,7 +113,7 @@ class ChatDetailsScreen extends StatelessWidget {
                           Expanded(
                             child: TextFormField(
                               controller: messageController,
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 hintText: ' Write your message ...',
                                 //  labelText: 'Write your Message ...',
@@ -97,7 +132,7 @@ class ChatDetailsScreen extends StatelessWidget {
                                 onPressed: ()
                                 {
                                   AppCubit.get(context).sendMessage(
-                                      receiverId: userModel!.uid!,
+                                      receiverId: widget.userModel!.uid!,
                                       text: messageController.text,
                                       dateTime: DateTime.now().toString()
                                   );
@@ -126,13 +161,13 @@ class ChatDetailsScreen extends StatelessWidget {
     child: Container(
       decoration: BoxDecoration(
           color: Colors.grey[300],
-          borderRadius: BorderRadiusDirectional.only(
+          borderRadius: const BorderRadiusDirectional.only(
             topStart: Radius.circular(20.0),
             topEnd: Radius.circular(20.0),
             bottomEnd: Radius.circular(20.0),
           )
       ),
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         vertical: 10,
         horizontal: 15,
       ),
@@ -147,13 +182,13 @@ class ChatDetailsScreen extends StatelessWidget {
     child: Container(
       decoration: BoxDecoration(
           color: Colors.blue[100],
-          borderRadius: BorderRadiusDirectional.only(
+          borderRadius: const BorderRadiusDirectional.only(
             topStart: Radius.circular(20.0),
             topEnd: Radius.circular(20.0),
             bottomStart: Radius.circular(20.0),
           )
       ),
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         vertical: 10,
         horizontal: 15,
       ),
@@ -162,5 +197,4 @@ class ChatDetailsScreen extends StatelessWidget {
       ),
     ),
   );
-
 }

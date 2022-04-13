@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:realestateapp/modules/cubit/cubit.dart';
 import 'package:realestateapp/modules/cubit/states.dart';
 import 'package:realestateapp/modules/home/home_screen.dart';
+import 'package:realestateapp/modules/location/location.dart';
 import 'package:realestateapp/shared/components/components.dart';
 
 class NewPost extends StatelessWidget {

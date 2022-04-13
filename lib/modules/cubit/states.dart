@@ -38,10 +38,7 @@ class AppCreatePostErrorState extends AppStates {
 
 class PostImagePickedSuccessState extends AppStates {}
 
-class PostImagePickedErrorState extends AppStates
-{
-
-}
+class PostImagePickedErrorState extends AppStates {}
 
 class AppRemovePostImageState extends AppStates{}
 
@@ -49,8 +46,7 @@ class AppGetPostsLoadingState extends AppStates{}
 
 class AppGetPostsSuccessState extends AppStates{}
 
-class AppGetPostsErrorState extends AppStates
-{
+class AppGetPostsErrorState extends AppStates {
   final String error;
   AppGetPostsErrorState(this.error);
 }
@@ -59,8 +55,7 @@ class AppGetAllUserLoadingState extends AppStates{}
 
 class AppGetAllUserSuccessState extends AppStates{}
 
-class AppGetAllUserErrorState extends AppStates
-{
+class AppGetAllUserErrorState extends AppStates {
   final String error;
   AppGetAllUserErrorState(this.error);
 }
@@ -68,10 +63,8 @@ class AppGetAllUserErrorState extends AppStates
 class AppSendMessageSuccessState extends AppStates{}
 
 class AppSendMessageErrorState extends AppStates{
-
   final String error;
   AppSendMessageErrorState(this.error);
-
 }
 
 class AppGetMessagesLoadingState extends AppStates{}
@@ -96,8 +89,7 @@ class PostUpdateErrorState extends AppStates{}
 
 class UploadNewImageSuccessState extends AppStates{}
 
-class UploadNewImageErrorState extends AppStates
-{
+class UploadNewImageErrorState extends AppStates {
   final String error;
   UploadNewImageErrorState(this.error);
 
@@ -107,11 +99,45 @@ class UploadNewPostLoadingState extends AppStates{}
 
 class UploadNewPostSuccessState extends AppStates{}
 
-class UploadNewPostErrorState extends AppStates
-{
+class UploadNewPostErrorState extends AppStates {
   final String error;
   UploadNewPostErrorState(this.error);
 }
+
+class AppGetYourPostsLoadingState extends AppStates{}
+
+class AppGetYourPostsSuccessState extends AppStates{}
+
+class AppGetYourPostsErrorState extends AppStates
+{
+  final String error;
+  AppGetYourPostsErrorState(this.error);
+}
+
+class UpdatePostLoadingState extends AppStates{}
+
+class UpdatePostSuccessState extends AppStates{}
+
+class UserUpdatePostErrorState extends AppStates{}
+
+class UpdatePostErrorState extends AppStates {
+  final String error;
+  UpdatePostErrorState(this.error);
+}
+
+class UploadPostImageErrorState extends AppStates{
+  final String error;
+  UploadPostImageErrorState(this.error);
+}
+
+class DeletePostSuccessState extends AppStates{}
+
+class DeletePostErrorState extends AppStates{
+  final String error;
+  DeletePostErrorState(this.error);
+}
+
+
 
 
 
