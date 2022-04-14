@@ -11,6 +11,7 @@ class PostModel
   String? area;
   String? postImage;
   String? price;
+  String? postid;
 
   PostModel({
     this.name,
@@ -24,6 +25,7 @@ class PostModel
     this.area,
     this.postImage,
     this.price,
+    this.postid,
   });
 
   PostModel.fromJson(Map<String, dynamic> json)
@@ -39,6 +41,7 @@ class PostModel
     area = json ['area'];
     postImage = json ['postImage'];
     price = json ['price'];
+    postid =json ['postid'];
   }
 
   Map<String, dynamic> toMap()
@@ -53,9 +56,11 @@ class PostModel
         'place' : place,
         'no_of_room' : no_of_room,
         'no_of_bathroom' : no_of_bathroom,
-        'area' : area,
+        'area' :
+        area,
         'postImage' : postImage,
         'price' : price,
+        'postid': postid,
       };
   }
 

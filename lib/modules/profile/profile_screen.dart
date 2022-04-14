@@ -160,7 +160,7 @@ class ProfileScreen extends StatelessWidget {
                   builder: (context) => ListView.separated(
                     shrinkWrap: true,
                     physics: const BouncingScrollPhysics(),
-                    itemBuilder: (context, index) => BuildYourPost(AppCubit.get(context).Yourposts[index], context),
+                    itemBuilder: (context, index) => BuildYourPost(AppCubit.get(context).Yourposts[index], context,index),
                     separatorBuilder: (context, index) =>
                     const SizedBox(height: 10,),
                     itemCount: AppCubit
@@ -181,7 +181,7 @@ class ProfileScreen extends StatelessWidget {
   }
 
 
-  Widget BuildYourPost(PostModel model, context) => Card(
+  Widget BuildYourPost(PostModel model, context ,index) => Card(
     clipBehavior: Clip.antiAliasWithSaveLayer,
     elevation: 5.0,
     margin: const EdgeInsets.symmetric(
@@ -257,7 +257,7 @@ class ProfileScreen extends StatelessWidget {
                                   title: Text('Delete'),
                                   onTap: ()
                                   {
-                                    AppCubit.get(context).deletePost();
+                                    AppCubit.get(context).deletePost(AppCubit.get(context).postsId[index]);
                                     navigateTo(context, LayoutScreen());
                                     print('Deleted');
 

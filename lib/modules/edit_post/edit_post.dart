@@ -10,6 +10,8 @@ import 'package:realestateapp/modules/cubit/states.dart';
 import 'package:realestateapp/modules/home/home_screen.dart';
 import 'package:realestateapp/shared/components/components.dart';
 
+import '../profile/profile_screen.dart';
+
 class EditPost extends StatelessWidget {
 
   var formKey = GlobalKey<FormState>();
@@ -29,12 +31,24 @@ class EditPost extends StatelessWidget {
     return BlocConsumer<AppCubit, AppStates>(
       listener: (context, state)
       {
-        var profileImage = AppCubit.get(context).postImage;
+        if(state is UpdatePostSuccessState){
+          showToast(text: 'success',state:  ToastStates.SUCCESS );
+          navigateTo(context,ProfileScreen());
+
+        }
+        if(state is UpdatePostErrorState){
+          showToast(text: 'failed',state:  ToastStates.ERROR );
+          navigateTo(context,ProfileScreen());
+
+        }
+
       },
       builder: (context, state)
       {
+        var profileImage = AppCubit.get(context).postImage;
 
-       NamePostController.text = postmodel!.namePost!;
+
+        NamePostController.text = postmodel!.namePost!;
        DescriptionController.text = postmodel!.description!;
        PlaceController.text = postmodel!.place!;
        no_of_roomsController.text = postmodel!.no_of_room!;
@@ -198,43 +212,65 @@ class EditPost extends StatelessWidget {
                             ],
                           ),
                           ),
-                          /*
+
                           Stack(
-                            alignment: AlignmentDirectional.topEnd,
+                            alignment: AlignmentDirectional.bottomEnd,
                             children: [
-                              if(AppCubit.get(context).postImage !=null)
-                                Container(
-                                  width: double.infinity,
-                                  height: 200,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(4),
-                                    image: DecorationImage(
-                                      //  fit: BoxFit.cover,
-                                      image:FileImage(AppCubit.get(context).postImage!),
-                                    ),
-                                  ),
-                                ),
-                              const SizedBox(
-                                height: 20,
+                              Container(
+                                width: double.infinity,
+                                height: 200,
+                                child: Image(
+                                  image: AppCubit.get(context).postImage == null ?
+                                  NetworkImage(
+                                    '${postmodel!.postImage}'
+                                ) :FileImage(AppCubit.get(context).postImage!) as ImageProvider,),
                               ),
-                              if(AppCubit.get(context).postImage !=null)
-                                CircleAvatar(child:
-                                IconButton(icon: Icon(Icons.close),
-                                  onPressed: ()
-                                  {
-                                    AppCubit.get(context).removePostImage();
-                                  },
-                                ),
-                                ),
-                              const SizedBox(
-                                height: 20,
+                              IconButton(onPressed: ()
+                              {
+                                AppCubit.get(context).getPostImage();
+                              }, icon: Icon(Icons.camera_alt),
+                                color: Colors.grey,
                               ),
                             ],
                           ),
-                          */
+                          
                         ],
                       ),
                     ),
+
+                    if(AppCubit.get(context).postImage != null)
+                      Row(
+                        children: [
+                          OutlinedButton(
+                            onPressed: ()
+                            {
+                              if(formKey.currentState!.validate())
+                              {
+                                AppCubit.get(context).updatePostImage(
+                                  name: AppCubit.get(context).userModel!.name!,
+                                  uid: AppCubit.get(context).userModel!.uid!,
+                                  image: AppCubit.get(context).userModel!.image!,
+                                  namePost: NamePostController.text,
+                                  description: DescriptionController.text,
+                                  place: PlaceController.text,
+                                  no_of_room: no_of_roomsController.text,
+                                  no_of_bathroom: no_of_bathroomController.text,
+                                  area: AreaController.text,
+                                  price: PriceController.text,
+
+
+                                );
+
+                              }
+
+                            },
+                            child: const Text(
+                              'Upload Post Image',
+                            ),
+                          ),
+                        ],
+                      ),
+
 
                     OutlinedButton(
                       onPressed: ()
@@ -248,15 +284,15 @@ class EditPost extends StatelessWidget {
                               namePost: NamePostController.text,
                               description: DescriptionController.text,
                               place: PlaceController.text,
-                              no_of_room: no_of_bathroomController.text,
+                              no_of_room: no_of_roomsController.text,
                               no_of_bathroom: no_of_bathroomController.text,
                               area: AreaController.text,
                               price: PriceController.text,
+                             // postImage: AppCubit.get(context).Yourposts.first.postImage,
                             );
-                            AppCubit.get(context).posts =[];
-                            AppCubit.get(context).getPosts();
 
-                            navigateTo(context, LayoutScreen());
+
+
                         }
                       },
                       child: const Text(

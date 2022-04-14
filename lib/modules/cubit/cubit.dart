@@ -308,6 +308,7 @@ class AppCubit extends Cubit<AppStates> {
       no_of_bathroom: no_of_bathroom,
       area: area,
       postImage: postImage,
+
     );
 
     FirebaseFirestore.instance
@@ -469,7 +470,6 @@ class AppCubit extends Cubit<AppStates> {
         print(element.data()['uid']);
         print(element.id);
         element.reference.collection('likes').get().then((value){
-
           postsId.add(element.id);
           if(element.data()['uid'] == uid)
             Yourposts.add(PostModel.fromJson(element.data()));
@@ -522,7 +522,7 @@ class AppCubit extends Cubit<AppStates> {
           no_of_bathroom: no_of_bathroom,
           area: area,
           price: price,
-          //  image: value,
+          postImage: value,
         );
         // profileImageUrl = value;
       })
@@ -548,6 +548,7 @@ class AppCubit extends Cubit<AppStates> {
     required String area,
     required String price,
     String? postImage,
+
   })
   {
     emit(UpdatePostLoadingState());
@@ -566,17 +567,13 @@ class AppCubit extends Cubit<AppStates> {
 
     FirebaseFirestore.instance
         .collection('posts')
-        .doc('BL34QCCCFvfsHG4Tw5XL')
+        .doc(model.postid)
         .update(model.toMap())
-        .then((value)
-    {
+        .then((value){
 
-      print(model.price);
-      posts =[];
-      getPosts();
-      Yourposts =[];
-      getYourPosts();
       emit(UpdatePostSuccessState());
+      print('===========================================================================');
+      print('uppdated successfuly ');
     })
         .catchError((error)
     {
@@ -585,23 +582,24 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
-
-  void deletePost()
+  void deletePost(String postid)
   {
     FirebaseFirestore.instance
         .collection('posts')
-        .doc('BL34QCCCFvfsHG4Tw5XL')
+        .doc(postid)
         .delete()
         .then((value)
     {
-      posts =[];
-      getPosts();
-      Yourposts =[];
-      getYourPosts();
+      // posts =[];
+      // getPosts();
+      // Yourposts =[];
+      // getYourPosts();
 
       print('deleted');
       emit(DeletePostSuccessState());
-      print('deleteddddd');
+      print('============================================================================================');
+      print('============================================================================================');
+
 
     })
         .catchError((error)
