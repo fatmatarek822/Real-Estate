@@ -29,6 +29,7 @@ class AppCubit extends Cubit<AppStates> {
   static AppCubit get(context) => BlocProvider.of(context);
 
   UserModel? userModel;
+  PostModel? postModel;
 
   void getUserData() {
     emit(AppGetUserLoadingState());
@@ -70,7 +71,6 @@ class AppCubit extends Cubit<AppStates> {
     if(index ==4)
     {
       emit(AppSettingState());
-      emit(AppGetYourPostsSuccessState());
     } else
     {
       currentIndex = index;
@@ -334,6 +334,7 @@ class AppCubit extends Cubit<AppStates> {
 
   // PostModel? postModel;
 
+
   void getPosts()
   {
     emit(AppGetPostsLoadingState());
@@ -457,6 +458,7 @@ class AppCubit extends Cubit<AppStates> {
 
 
   List<PostModel> Yourposts =[];
+  List<String> IDs =[];
   void getYourPosts()
   {
     emit(AppGetPostsLoadingState());
@@ -468,14 +470,12 @@ class AppCubit extends Cubit<AppStates> {
       value.docs.forEach((element)
       {
         print(element.data()['uid']);
-        print(element.id);
-        element.reference.collection('likes').get().then((value){
-          postsId.add(element.id);
-          if(element.data()['uid'] == uid)
-            Yourposts.add(PostModel.fromJson(element.data()));
-        }).catchError((error){
 
-        });
+          if(element.data()['uid'] == uid)
+          {
+            IDs.add(element.id);
+            Yourposts.add(PostModel.fromJson(element.data()));
+          }
       });
       emit(AppGetYourPostsSuccessState());
     })
@@ -523,6 +523,7 @@ class AppCubit extends Cubit<AppStates> {
           area: area,
           price: price,
           postImage: value,
+
         );
         // profileImageUrl = value;
       })
@@ -548,7 +549,6 @@ class AppCubit extends Cubit<AppStates> {
     required String area,
     required String price,
     String? postImage,
-
   })
   {
     emit(UpdatePostLoadingState());
@@ -563,16 +563,15 @@ class AppCubit extends Cubit<AppStates> {
       no_of_bathroom: no_of_bathroom,
       area: area,
       price: price,
-    );
 
+    );
     FirebaseFirestore.instance
         .collection('posts')
-        .doc(model.postid)
+        .doc()
         .update(model.toMap())
         .then((value){
 
       emit(UpdatePostSuccessState());
-      print('===========================================================================');
       print('uppdated successfuly ');
     })
         .catchError((error)
@@ -582,11 +581,11 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
-  void deletePost(String postid)
+  void deletePost(docId)
   {
     FirebaseFirestore.instance
         .collection('posts')
-        .doc(postid)
+        .doc('qlvjAV2W24M6tnwpjkIq')
         .delete()
         .then((value)
     {

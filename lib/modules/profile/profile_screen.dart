@@ -231,55 +231,55 @@ class ProfileScreen extends StatelessWidget {
               ),
               const Spacer(),
               IconButton(
-                  onPressed: ()
-                  {
-                    showModalBottomSheet(
-                        context: context,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(30),
+                onPressed: ()
+                {
+                  showModalBottomSheet(
+                    context: context,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(30),
+                      ),
+                    ),
+                    builder: (context) => Container(
+                      height: 170,
+                      child: Column(
+                        children: <Widget>[
+                          ListTile(
+                            leading: Icon(Icons.edit,),
+                            title: Text('Edit'),
+                            onTap: ()
+                            {
+                              navigateTo(context, EditPost(postmodel: model,));
+                            },
                           ),
-                        ),
-                        builder: (context) => Container(
-                            height: 170,
-                            child: Column(
-                              children: <Widget>[
-                                ListTile(
-                                  leading: Icon(Icons.edit,),
-                                  title: Text('Edit'),
-                                  onTap: ()
-                                  {
-                                    navigateTo(context, EditPost(postmodel: model,));
-                                  },
-                                ),
-                                ListTile(
-                                  leading: Icon(Icons.delete,),
-                                  title: Text('Delete'),
-                                  onTap: ()
-                                  {
-                                    AppCubit.get(context).deletePost(AppCubit.get(context).postsId[index]);
-                                    navigateTo(context, LayoutScreen());
-                                    print('Deleted');
+                          ListTile(
+                            leading: Icon(Icons.delete,),
+                            title: Text('Delete'),
+                            onTap: ()
+                            {
+                              AppCubit.get(context).deletePost(AppCubit.get(context).postsId[index]);
+                              navigateTo(context, LayoutScreen());
+                              print('Deleted');
 
-                                  },
-                                ),
-                                ListTile(
-                                  leading: Icon(Icons.close,),
-                                  title: Text('Close'),
-                                  onTap: ()
-                                  {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ],
-                            ),
+                            },
                           ),
+                          ListTile(
+                            leading: Icon(Icons.close,),
+                            title: Text('Close'),
+                            onTap: ()
+                            {
+                              Navigator.pop(context);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
 
-                    );
-                  },
-                  icon: const Icon(
-                      Icons.more_horiz,
-                  ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.more_horiz,
+                ),
               ),
             ],
 

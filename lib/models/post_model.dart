@@ -56,8 +56,7 @@ class PostModel
         'place' : place,
         'no_of_room' : no_of_room,
         'no_of_bathroom' : no_of_bathroom,
-        'area' :
-        area,
+        'area' : area,
         'postImage' : postImage,
         'price' : price,
         'postid': postid,

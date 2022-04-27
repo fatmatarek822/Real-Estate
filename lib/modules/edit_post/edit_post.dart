@@ -1,5 +1,4 @@
-
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:realestateapp/layout/layout_screen.dart';
@@ -8,6 +7,7 @@ import 'package:realestateapp/models/user_model.dart';
 import 'package:realestateapp/modules/cubit/cubit.dart';
 import 'package:realestateapp/modules/cubit/states.dart';
 import 'package:realestateapp/modules/home/home_screen.dart';
+import 'package:realestateapp/modules/setting/setting_screen.dart';
 import 'package:realestateapp/shared/components/components.dart';
 
 import '../profile/profile_screen.dart';
@@ -24,6 +24,7 @@ class EditPost extends StatelessWidget {
   var PriceController = TextEditingController();
 
   PostModel? postmodel;
+
   EditPost({this.postmodel});
 
   @override
@@ -33,7 +34,15 @@ class EditPost extends StatelessWidget {
       {
         if(state is UpdatePostSuccessState){
           showToast(text: 'success',state:  ToastStates.SUCCESS );
-          navigateTo(context,ProfileScreen());
+          AppCubit.get(context).posts=[];
+          AppCubit.get(context).getPosts();
+          // AppCubit.get(context).Yourposts=[];
+          // AppCubit.get(context).getYourPosts();
+
+          navigateAndFinish(context, ProfileScreen());
+          //navigateTo(context, ProfileScreen());
+          //navigateTo(context,LayoutScreen());
+
 
         }
         if(state is UpdatePostErrorState){
@@ -49,12 +58,12 @@ class EditPost extends StatelessWidget {
 
 
         NamePostController.text = postmodel!.namePost!;
-       DescriptionController.text = postmodel!.description!;
-       PlaceController.text = postmodel!.place!;
-       no_of_roomsController.text = postmodel!.no_of_room!;
-       no_of_bathroomController.text = postmodel!.no_of_bathroom!;
-       AreaController.text = postmodel!.area!;
-     //  PriceController.text = postmodel!.price!;
+        DescriptionController.text = postmodel!.description!;
+        PlaceController.text = postmodel!.place!;
+        no_of_roomsController.text = postmodel!.no_of_room!;
+        no_of_bathroomController.text = postmodel!.no_of_bathroom!;
+        AreaController.text = postmodel!.area!;
+        //PriceController.text = postmodel!.price!;
 
         return Scaffold(
           appBar: AppBar(
@@ -222,8 +231,8 @@ class EditPost extends StatelessWidget {
                                 child: Image(
                                   image: AppCubit.get(context).postImage == null ?
                                   NetworkImage(
-                                    '${postmodel!.postImage}'
-                                ) :FileImage(AppCubit.get(context).postImage!) as ImageProvider,),
+                                      '${postmodel!.postImage}'
+                                  ) :FileImage(AppCubit.get(context).postImage!) as ImageProvider,),
                               ),
                               IconButton(onPressed: ()
                               {
@@ -233,7 +242,7 @@ class EditPost extends StatelessWidget {
                               ),
                             ],
                           ),
-                          
+
                         ],
                       ),
                     ),
@@ -271,28 +280,29 @@ class EditPost extends StatelessWidget {
                         ],
                       ),
 
-
                     OutlinedButton(
                       onPressed: ()
                       {
+
                         if(formKey.currentState!.validate())
                         {
-                            AppCubit.get(context).updatePost(
-                              name: AppCubit.get(context).userModel!.name!,
-                              uid: AppCubit.get(context).userModel!.uid!,
-                              image: AppCubit.get(context).userModel!.image!,
-                              namePost: NamePostController.text,
-                              description: DescriptionController.text,
-                              place: PlaceController.text,
-                              no_of_room: no_of_roomsController.text,
-                              no_of_bathroom: no_of_bathroomController.text,
-                              area: AreaController.text,
-                              price: PriceController.text,
-                             // postImage: AppCubit.get(context).Yourposts.first.postImage,
-                            );
-
-
-
+                          AppCubit.get(context).updatePost(
+                            name: AppCubit.get(context).userModel!.name!,
+                            uid: AppCubit.get(context).userModel!.uid!,
+                            image: AppCubit.get(context).userModel!.image!,
+                            namePost: NamePostController.text,
+                            description: DescriptionController.text,
+                            place: PlaceController.text,
+                            no_of_room: no_of_roomsController.text,
+                            no_of_bathroom: no_of_bathroomController.text,
+                            area: AreaController.text,
+                            price: PriceController.text,
+                            // postImage: AppCubit.get(context).Yourposts.first.postImage,
+                          );
+                          AppCubit.get(context).posts=[];
+                          AppCubit.get(context).getPosts();
+                          AppCubit.get(context).Yourposts=[];
+                          AppCubit.get(context).getYourPosts();
                         }
                       },
                       child: const Text(
@@ -310,3 +320,5 @@ class EditPost extends StatelessWidget {
   }
 
 }
+
+

@@ -31,7 +31,9 @@ Widget defaultFormField({
   bool isClickable= true,
   VoidCallback? suffixpressed,
   VoidCallback? ontap,
-
+  final TextStyle? labelStyle,
+  Color? color,
+  final TextStyle ? style,
 
 }) => TextFormField(
   validator:validate,
@@ -42,30 +44,34 @@ Widget defaultFormField({
   onChanged: onChange,
   onTap: ontap,
 
-
   decoration: InputDecoration(
-    labelText:label,
-    prefixIcon:Icon(prefix,),
+    labelText: label,
+    labelStyle: labelStyle,
+
+    prefixIcon:Icon(prefix, color: color,),
     suffixIcon: suffix !=null ?
     IconButton( onPressed: suffixpressed ,
-        icon: Icon(suffix,)) :null ,
-    border: const OutlineInputBorder(),
+        icon: Icon(suffix,color: color,)) :null ,
+    border: OutlineInputBorder(borderRadius: BorderRadius.circular(30),),
   ),
-
+   style: style,
 );
 
 
 Widget defaultButton ({
   double width = double.infinity,
-  Color background = Colors.blue,
+  Color background = Colors.brown,
   required VoidCallback function ,
   required String text,
   bool? isUpperCase ,
+  ButtonStyle? style,
 }) =>
     Container(
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(50), color: background),
       width: width ,
-      color: background, child: MaterialButton(
+       child: MaterialButton(
       onPressed:function,
+
       child:Text(
         text,
         style:const TextStyle(
@@ -79,9 +85,10 @@ Widget defaultButton ({
 Widget defaultTextButton({
   required VoidCallback function,
   required String text,
+  TextStyle? style,
 })=> TextButton(
   onPressed: function,
-  child: Text(text.toUpperCase()),
+  child: Text(text,),
 );
 
 
