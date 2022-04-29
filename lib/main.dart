@@ -75,9 +75,9 @@ class MyApp extends StatelessWidget {
             themeMode: ThemeMode.light,
             //themeMode: AppCubit.get(context).isDark ? ThemeMode.dark : ThemeMode.light,
             home: AnimatedSplashScreen(
-              splash: Icons.house_outlined,
-              nextScreen: startWidget!,
-              backgroundColor: Colors.white,
+              splash: Image(image: AssetImage('assets/images/11.png'),),
+              nextScreen: OnBoardingScreen(),
+              backgroundColor: Colors.brown,
               duration: 2500,
               centered: true,
               splashIconSize: 100,

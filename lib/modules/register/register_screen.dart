@@ -40,7 +40,7 @@ class RegisterScreen extends StatelessWidget {
             body: Stack(
               alignment: AlignmentDirectional.center,
               children: [
-                Image(image: NetworkImage('https://i.pinimg.com/750x/b5/f9/74/b5f97457f4e380b92caa56eb5c5d4250.jpg',),
+                Image(image: AssetImage('assets/images/Background.jpg'),
                   height: double.infinity,
                   width: double.infinity,
                   fit: BoxFit.fill,

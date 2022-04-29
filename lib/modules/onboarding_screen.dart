@@ -6,12 +6,12 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class BoardingModel {
   final String image;
-  final String title;
+ // final String title;
   final String body;
 
   BoardingModel ({
     required this.image,
-    required this.title,
+ //   required this.title,
     required this.body,
   });
 }
@@ -28,19 +28,19 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   List<BoardingModel> boarding =
   [
     BoardingModel(
-        image: 'assets/images/1.jpg',
-        title: 'On Boarding 1 Title',
-        body: 'On Board 1 Body'
+        image: 'assets/images/onBoarding1.png',
+        //title: 'On Boarding 1 Title',
+        body: 'Through our application, You can sale your real estate easily'
     ),
     BoardingModel(
-        image: 'assets/images/2.jpg',
-        title: 'On Boarding 2 Title',
-        body: 'On Board 2 Body'
+        image: 'assets/images/onBoarding2.png',
+      //  title: 'On Boarding 2 Title',
+        body: 'You can search about your dream house in few minutes'
     ),
     BoardingModel(
-        image: 'assets/images/3.jpg',
-        title: 'On Boarding 3 Title',
-        body: 'On Board 3 Body'
+        image: 'assets/images/onBoarding3.png',
+     //   title: 'On Boarding 3 Title',
+        body: 'We wish you Successful deals'
     ),
   ];
 
@@ -110,7 +110,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     expansionFactor: 4,
                     dotWidth: 10,
                     spacing: 5.0,
-                    activeDotColor: Colors.lightBlue,
+                    activeDotColor: Colors.brown,
                   ),
                 ),
                 //  Text(
@@ -155,12 +155,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       const SizedBox(
         height: 30.0,
       ),
-      Text(
-        '${model.title}',
-        style: const TextStyle(
-          fontSize: 24.0,
-        ),
-      ),
+      // Text(
+      //   '${model.title}',
+      //   style: const TextStyle(
+      //     fontSize: 24.0,
+      //   ),
+      // ),
       const SizedBox(
         height: 15.0,
       ),
